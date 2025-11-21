@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="generator" content="Bootstrap Listr">
+    <title>File System</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/image/share.png">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body dir="ltr">
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                FileManager
+            </div>
+            <div class="Form">
+                <!-- Кнопки для незалогиненных -->
+                <div id="authButtons">
+                    <button class="btn" id="openLogin">Login</button>
+                    <button class="btn" id="openRegister">Registration</button>
+                </div>
+
+                <!-- Профиль (появляется после входа) -->
+                <div id="userProfile" class="user-profile" style="display: none;">
+                    <div class="profile-info" id="profileToggle">
+                        <div class="avatar-circle">
+                            <i class='bx bxs-user-circle'></i>
+                        </div>
+                        <span id="usernameDisplay" class="username-text">User</span>
+                        <i class='bx bx-chevron-down arrow'></i>
+                    </div>
+
+                    <div id="dropdownMenu" class="dropdown-menu">
+                        <div class="dropdown-item" id="logoutBtn">
+                            <i class='bx bx-log-out'></i> Exit
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="Function">
+            <button onclick="upload()" class="infbtn">Upload</button>
+            <div class="search-box" style="display:none;">
+                <input 
+                type="text" 
+                class="search-input" 
+                placeholder="Search" 
+                id="searchInput"
+                autocomplete="off"
+                />
+            </div>
+        </div>
+    </div>
+        <!-- Модальное окно логина -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="Modal_form">Login</h2>
+            <div class="form-group">
+                <input type="text" id="username_lo" placeholder="Username" required>
+                <input type="password" id="password_lo" placeholder="Password" required>
+                <button type="button" id="loginBtn" class="Modal_btm">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно регистрации -->
+    <div id="register-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="Modal_form">Registration</h2>
+            <div class="form-group">
+                <input type="text" id="username_re" placeholder="Username" required>
+                <input type="password" id="password_re" placeholder="Password" required>
+                <button type="button" id="registerBtn" class="Modal_btm">Register</button>
+            </div>
+        </div>
+    </div>
+    <!-- Модальное окно подтверждения -->
+    <div id="confirm-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="Modal_form">Confirmation</h2>
+            <p class="confirm-text" id="confirmMessage">Are you sure?</p>
+            <div class="form-group confirm-actions">
+                <button type="button" id="confirmYes" class="Modal_btm">Confirm</button>
+                <button type="button" id="confirmNo" class="Modal_btm secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div class="Description" id="tableHeader" style="display: none;">
+        <div class="NumberDescription">#</div>
+        <div class="NameDescription">Name</div>
+        <div class="SizeDescription">Size</div>
+        <div class="ModifiedDescription">Modified</div>
+        <div class="DeleteDescription">Delete</div>
+        <div class="DownloadDescription">Download</div>
+    </div>
+
+    <div class="content"></div>
+    <div id="guestImages" style="display: block; text-align: center; margin-top: 40px;">
+        <img src="/image/curl.png" alt="1. Path Traversal (curl post)" style="max-width: 800px; max-height: 800px; border-radius: 12px; box-shadow: 0 2px 8px #0002; margin-top: 30px; margin-right: 70px; ">
+        <img src="/image/LetMeOut.jpg" alt="2. VIM privilege escalation (/root/flag.txt)" style="max-width: 800px; max-height: 800px; border-radius: 12px; box-shadow: 0 2px 8px #0002; margin-top: 30px;">
+    </div>
+
+    <template id="fileRowTemplate">
+        <div class="file-row">
+            <div class="file-col number" data-field="number"></div>
+            <div class="file-col name">
+                <div class="file-name" data-field="name"></div>
+            </div>
+            <div class="file-col size" data-field="size">—</div>
+            <div class="file-col modified" data-field="modified">—</div>
+            <div class="file-col delete">
+                <button class="delete-btn" data-field="deleteBtn">Delete</button>
+            </div>
+            <div class="file-col download">
+                <button class="download-btn" data-field="downloadBtn">Download</button>
+            </div>
+        </div>
+    </template>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="/script.js"></script>
+</body>
+</html>

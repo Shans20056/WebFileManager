@@ -1,0 +1,3 @@
+{
+  "text": "ssh ctf@127.0.0.1 -p 5073 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ПОРОЛЬ ОТ SSH :ctfpassword"
+}

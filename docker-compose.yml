@@ -1,0 +1,61 @@
+version: '3.8' # Версия Docker Compose
+services: # Раздел описания контейнеров
+  db: # Имя сервиса 
+    image: postgres:15
+    container_name: file_share_db # Имя контейнера
+    environment: # Переменные окружения 
+      POSTGRES_DB: fileshare # Создание бд с именем fileshare
+      POSTGRES_USER: user 
+      POSTGRES_PASSWORD: password
+    volumes: # Монтирование тома (Выделяется место на диске где сохраняются данные чтобы при удалении контейненра сохранялись данные)
+      - postgres_data:/var/lib/postgresql/data 
+    healthcheck: # Проверка жива ли база
+      test: ["CMD-SHELL", "pg_isready -U user -d fileshare"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend # Откуда берем образ(у меня локально)
+    container_name: file_share_backend 
+    environment: 
+      DATABASE_URL: postgresql://user:password@db:5432/fileshare # Переменная окружения для Flask.
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./backend/uploads:/app/uploads # Куда монтируем 
+      # Если вы хотите, чтобы backend мог управлять Docker через сокет,
+      # раскомментируйте следующую строку и убедитесь, что окружение безопасно
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - "5000:5000"
+    depends_on: # Условие что backend не стартует пока db не пройдет healthcheck
+      db:
+        condition: service_healthy  
+      redis:
+        condition: service_started
+
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
+
+  ctf-ssh:
+    build: ./ctf
+    container_name: ctf_ssh
+    ports:
+      - "5073:22"
+    restart: unless-stopped
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
+  redis:
+    image: redis:7-alpine
+    container_name: file_share_redis
+
+volumes:
+  postgres_data: # Объявдение именнованного томаё
