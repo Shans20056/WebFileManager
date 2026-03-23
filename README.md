@@ -19,6 +19,6 @@
 
 ### Запуск
 
-```docker-compose down -v --remove-orphants && docker-compose build --no-cache && docker-compose up -d --force-recreate```
+```docker-compose down -v --remove-orphans && docker-compose build --no-cache && docker-compose up -d --force-recreate```
 
 Работает локально надо менять пути
