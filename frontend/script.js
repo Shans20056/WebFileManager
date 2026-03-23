@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000";
+const API_URL = "/api";
 
 // Глобальная функция upload() — потому что у тебя onclick="upload()" в HTML
 function showToast(message, type = 'info', duration = 500) {
